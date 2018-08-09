@@ -10,7 +10,8 @@ class App extends Component {
     super();
     this.state = {
       currentUser: { name: 'Anonymous' },
-      messages: []
+      messages: [],
+      count: 1
     }
     this.getMessage = this.getMessage.bind(this);
     this.updateUser = this.updateUser.bind(this);
@@ -28,11 +29,7 @@ class App extends Component {
 
   const stringMessage = JSON.stringify(newMessage)
   
-  // const newMessages = this.state.messages.concat(newMessage)
 
-  // this.setState({ messages: newMessages })
-
-  // this.socket.send(`${newMessage.username} says ${newMessage.content}`)
   console.log(stringMessage)
   this.socket.send(stringMessage)
 
@@ -61,23 +58,24 @@ class App extends Component {
       console.log("connected")
     }
 
-    // function showMessagesFromServer(event) {
-    //   console.log(event.data)
-    // }
-   
 
     this.socket.addEventListener('open', connected)
     
     this.socket.onmessage = (event) => {
       const parsedEvent = JSON.parse(event.data)
+      
+      if (parsedEvent.count) {
+        console.log("parsed", parsedEvent.count)
+        this.setState({count: parsedEvent.count})
+        console.log("set state: ", this.state.count)        
+      }
+      
       console.log(parsedEvent.type)
       const newMessageAdd = this.state.messages.concat(parsedEvent)
     
       this.setState({ messages: newMessageAdd })
 
       
-      //if it's incoming Message do this
-      //else if it's incoming Notification do this
     }
 
   //   this.socket.addEventListener('message', showMessagesFromServer)
@@ -102,17 +100,14 @@ class App extends Component {
 
   updateUser(event) {
     
-      console.log(event.target.value)
+      console.log("event value: ", event.target.value)
       const newUser = event.target.value
       const oldName = this.state.currentUser.name
       this.setState({currentUser: {name: newUser}})
       const updatedMessage = {
-        //create the new object to send to server
-        //with a certain type
         oldUserName: oldName,
         username: newUser,
         type: "postNotification",
-        // content: `${updatedMessage.oldUserName} changed their name to `
       }
       const stringUpdatedMessage = JSON.stringify(updatedMessage)
       console.log(stringUpdatedMessage)
@@ -125,9 +120,10 @@ class App extends Component {
 
       <div>
         <nav className="navbar">
-          <a href="/" className="navbar-brand">Chatty</a>
+          <a href="/" className="navbar-brand">Chat It Up!</a>
+          <span className="count">{this.state.count} users online</span>
         </nav>
-
+        {/* <Nav count={this.state.count} /> */}
         <MessageList updateUser={this.updateUser} messages={this.state.messages} />
         <ChatBar updateUser={this.updateUser} getMessage={this.getMessage} currentUser={this.state.currentUser} />
 
