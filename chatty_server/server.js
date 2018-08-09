@@ -48,6 +48,18 @@ function handleMessage(message) {
 
 wss.on('connection', (ws) => {
   console.log('Client connected');
+  const newConnection = {
+      content: "a new user has joined the chat!",
+      id: createId(),
+      type: "incomingNotification"
+  }
+  const newConnectionString = JSON.stringify(newConnection)
+  for (let client of wss.clients){
+    if (client.readyState){
+        client.send(newConnectionString)
+    }
+  }
+  
 //   ws.send('hello from server')//this sends to client side as event
   ws.on('message', handleMessage)
 })
@@ -58,4 +70,7 @@ wss.on('connection', (ws) => {
 
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  wss.on('close', () => console.log('Client disconnected'));
+  wss.on('close', () => {
+      console.log('Client disconnected');
+      
+    });
