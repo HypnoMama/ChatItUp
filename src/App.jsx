@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
-// import Message from './Message.jsx';
+import Nav from './Nav.jsx';
 
 
 class App extends Component {
@@ -28,7 +28,7 @@ class App extends Component {
   }
 
   const stringMessage = JSON.stringify(newMessage)
-  
+
   this.socket.send(stringMessage)
 
   event.target.value = ''
@@ -59,16 +59,18 @@ class App extends Component {
     this.socket.addEventListener('open', connected)
     
     this.socket.onmessage = (event) => {
+
+      
+
       const parsedEvent = JSON.parse(event.data)
       
       if (parsedEvent.count) {
         this.setState({count: parsedEvent.count})
-      }
-  
+      }  else {
       const newMessageAdd = this.state.messages.concat(parsedEvent)
     
       this.setState({ messages: newMessageAdd })
-
+      }
       
     }
     
@@ -95,11 +97,7 @@ class App extends Component {
     return (
 
       <div>
-        <nav className="navbar">
-          <a href="/" className="navbar-brand">Chat It Up!</a>
-          <span className="count">{this.state.count} users online</span>
-        </nav>
-        {/* <Nav count={this.state.count} /> */}
+        <Nav count={this.state.count} />
         <MessageList updateUser={this.updateUser} messages={this.state.messages} />
         <ChatBar updateUser={this.updateUser} getMessage={this.getMessage} currentUser={this.state.currentUser} />
 
@@ -109,7 +107,7 @@ class App extends Component {
   }
 }
 
-
+//]
 
 
 export default App;
