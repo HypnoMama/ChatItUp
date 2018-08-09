@@ -66,7 +66,7 @@ class App extends Component {
       if (parsedEvent.count) {
         this.setState({count: parsedEvent.count})
       } else if (parsedEvent.userColor) { 
-        this.setState({currentUser: {userColor: parsedEvent.userColor}})
+        this.setState({currentUser: {name: this.state.currentUser.name, userColor: parsedEvent.userColor}})
       
       } else {
        
@@ -85,7 +85,7 @@ class App extends Component {
       
       const newUser = event.target.value
       const oldName = this.state.currentUser.name
-      this.setState({currentUser: {name: newUser}})
+      this.setState({currentUser: {name: newUser, userColor: this.state.currentUser.userColor}})
       const updatedMessage = {
         oldUserName: oldName,
         username: newUser,
@@ -97,11 +97,14 @@ class App extends Component {
 
 
   render() {
+
+    const colorObject = {color: this.state.currentUser.userColor}
+    console.log(colorObject)
     return (
 
       <div>
         <Nav count={this.state.count} />
-        <MessageList updateUser={this.updateUser} messages={this.state.messages} />
+        <MessageList style={colorObject} updateUser={this.updateUser} messages={this.state.messages} />
         <ChatBar updateUser={this.updateUser} getMessage={this.getMessage} currentUser={this.state.currentUser} />
 
       </div>
