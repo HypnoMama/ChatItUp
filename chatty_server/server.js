@@ -28,18 +28,30 @@ function handleMessage(message) {
         parsedMessage["content"] = `${parsedMessage.oldUserName} changed their name to ${parsedMessage.username}`
         parsedMessage["type"] = "incomingNotification"
     } else {
-        parsedMessage["type"] = "incomingMessage"
-        // delete parsedMessage["userColor"]
+        parsedMessage["type"] = "incomingMessage";
+        if (checkForPicture(parsedMessage.content)) {
+            const arrayOfPics = checkForPicture(parsedMessage.content)
+            parsedMessage["images"] = arrayOfPics;
+            parsedMessage["content"] = parsedMessage["content"]
+                                    .replace(arrayOfPics[0], '')
+
+
+
+
+            
+            
+           
+            
+        }
+        
     }
     
     doc = parsedMessage
-    const docString = JSON.stringify(doc)
-
-
-    console.log( docString)  
+    const docString = JSON.stringify(doc);
+  
     for (let client of wss.clients){
         if (client.readyState) {
-            client.send(docString)
+            client.send(docString);
             
         }
     }     
@@ -49,28 +61,27 @@ function checkCount() {
     const count = {
         count: wss.clients.size
     }
-    const stringCount = JSON.stringify(count)
+    const stringCount = JSON.stringify(count);
     for (let client of wss.clients){
       if (client.readyState){
-          client.send(stringCount)
+          client.send(stringCount);
       }
     }
 }
 
-function color(ws) {
-    const colors = ['#168D99', '#FF8938', '#FF1E1A', '#53B6FF', '#CC8C93', '#78B4FF']
-    const index = Math.floor(Math.random()* Math.floor(5))
-
-    const userColor = JSON.stringify({ userColor: colors[index] })
-    console.log("server; ", userColor)
-    ws.send(userColor)
-    // for (let client of wss.clients){
-    //     if (client.readyState){
-    //         client.send(userColor)
-    //     }
-    //   }
-
+function checkForPicture(messageContent) {
     
+    const expression = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|bmp|png)/g;    
+    const foundPic = messageContent.match(expression);
+    return foundPic;
+}
+
+function color(ws) {
+    const colors = ['#168D99', '#FF8938', '#FF1E1A', '#53B6FF', '#CC8C93', '#78B4FF'];
+    const index = Math.floor(Math.random()* Math.floor(5));
+
+    const userColor = JSON.stringify({ userColor: colors[index] });
+    ws.send(userColor);    
     
 }
 
@@ -93,7 +104,6 @@ wss.on('connection', (ws) => {
     }
   }
   
-//   ws.send('hello from server')//this sends to client side as event
   ws.on('message', handleMessage)
 
 
