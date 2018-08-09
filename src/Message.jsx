@@ -7,7 +7,8 @@ class Message extends Component {
   render() {
 
     return (
-    <div>
+
+    <div className= {this.props.messageType ===  'incomingNotification' ? 'message system' : 'message' }>
       <span className="message-username">{this.props.username}</span>
       <span className="message-content">{this.props.content}</span>
     </div>
