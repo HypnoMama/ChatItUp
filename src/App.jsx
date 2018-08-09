@@ -29,8 +29,6 @@ class App extends Component {
 
   const stringMessage = JSON.stringify(newMessage)
   
-
-  console.log(stringMessage)
   this.socket.send(stringMessage)
 
   event.target.value = ''
@@ -52,7 +50,6 @@ class App extends Component {
     }, 3000);
 
     this.socket = new WebSocket('ws://localhost:3001');
-    // this.socket = ws;
 
     function connected() {
       console.log("connected")
@@ -65,42 +62,22 @@ class App extends Component {
       const parsedEvent = JSON.parse(event.data)
       
       if (parsedEvent.count) {
-        console.log("parsed", parsedEvent.count)
         this.setState({count: parsedEvent.count})
-        console.log("set state: ", this.state.count)        
       }
-      
-      console.log(parsedEvent.type)
+  
       const newMessageAdd = this.state.messages.concat(parsedEvent)
     
       this.setState({ messages: newMessageAdd })
 
       
     }
-
-  //   this.socket.addEventListener('message', showMessagesFromServer)
     
   }
-
-  //so first we get a server message -
-  //console.log to terminal Client connected and hello from server
-  //on client side -
-  //the connection is opened and we send I am connected 
-  //to the server - logs in terminal
-  //then a server "send" -> hello from server in terminal
-  //and on client side because we console.logged it as event data on message
-  //so then we send it back as event.data
-  //which triggers handleMessae with the message being 
-  //hello from server so then we are console.loggin i am on the server
-
- 
-
-
 
 
   updateUser(event) {
     
-      console.log("event value: ", event.target.value)
+      
       const newUser = event.target.value
       const oldName = this.state.currentUser.name
       this.setState({currentUser: {name: newUser}})
@@ -110,7 +87,6 @@ class App extends Component {
         type: "postNotification",
       }
       const stringUpdatedMessage = JSON.stringify(updatedMessage)
-      console.log(stringUpdatedMessage)
       this.socket.send(stringUpdatedMessage)
   }
 
