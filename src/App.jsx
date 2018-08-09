@@ -9,7 +9,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      currentUser: { name: 'Anonymous' },
+      currentUser: { name: 'Anonymous', userColor: 'black' },
       messages: [],
       count: 1
     }
@@ -52,7 +52,7 @@ class App extends Component {
     this.socket = new WebSocket('ws://localhost:3001');
 
     function connected() {
-      console.log("connected")
+      console.log("connected")     
     }
 
 
@@ -63,10 +63,13 @@ class App extends Component {
       
 
       const parsedEvent = JSON.parse(event.data)
-      
       if (parsedEvent.count) {
         this.setState({count: parsedEvent.count})
-      }  else {
+      } else if (parsedEvent.userColor) { 
+        this.setState({currentUser: {userColor: parsedEvent.userColor}})
+      
+      } else {
+       
       const newMessageAdd = this.state.messages.concat(parsedEvent)
     
       this.setState({ messages: newMessageAdd })
