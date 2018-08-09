@@ -29,6 +29,7 @@ function handleMessage(message) {
         parsedMessage["type"] = "incomingNotification"
     } else {
         parsedMessage["type"] = "incomingMessage"
+        // delete parsedMessage["userColor"]
     }
     
     doc = parsedMessage
@@ -56,19 +57,20 @@ function checkCount() {
     }
 }
 
-function color() {
-    const colors = ['#168D99', '#14CC97', '#CC8C93', '#78B4FF']
-    const index = Math.floor(Math.random()* Math.floor(3))
+function color(ws) {
+    const colors = ['#168D99', '#FF8938', '#FF1E1A', '#53B6FF', '#CC8C93', '#78B4FF']
+    const index = Math.floor(Math.random()* Math.floor(5))
 
     const userColor = JSON.stringify({ userColor: colors[index] })
-    console.log(userColor)
-    for (let client of wss.clients){
-        if (client.readyState){
-            client.send(userColor)
-        }
-      }
+    console.log("server; ", userColor)
+    ws.send(userColor)
+    // for (let client of wss.clients){
+    //     if (client.readyState){
+    //         client.send(userColor)
+    //     }
+    //   }
 
-        
+    
     
 }
 
@@ -76,7 +78,7 @@ wss.on('connection', (ws) => {
   console.log('Client connected');
   
   checkCount()
-  color()
+  color(ws)
  
 
   const newConnection = {
