@@ -35,11 +35,25 @@ class App extends Component {
   event.target.value = ''
   }
 } 
+ 
+updateUser(event) {
+    
+      
+  const newUser = event.target.value
+  const oldName = this.state.currentUser.name
+  this.setState({currentUser: {name: newUser, userColor: this.state.currentUser.userColor}})
+  const updatedMessage = {
+    oldUserName: oldName,
+    username: newUser,
+    type: "postNotification"
+  }
+  const stringUpdatedMessage = JSON.stringify(updatedMessage)
+  this.socket.send(stringUpdatedMessage)
+}
 
 
 
   componentDidMount() {
-    console.log("componentDidMount <App />");
     setTimeout(() => {
       console.log("Simulating incoming message");
       // Add a new message to the list of messages in the data store
@@ -61,10 +75,7 @@ class App extends Component {
     
     this.socket.onmessage = (event) => {
 
-      
-
       const parsedEvent = JSON.parse(event.data)
-      console.log(parsedEvent)
       if (parsedEvent.count) {
         this.setState({count: parsedEvent.count})
       } else if (parsedEvent.userColor) { 
@@ -80,27 +91,11 @@ class App extends Component {
   }
 
 
-  updateUser(event) {
-    
-      
-      const newUser = event.target.value
-      const oldName = this.state.currentUser.name
-      this.setState({currentUser: {name: newUser, userColor: this.state.currentUser.userColor}})
-      const updatedMessage = {
-        oldUserName: oldName,
-        username: newUser,
-        type: "postNotification"
-      }
-      const stringUpdatedMessage = JSON.stringify(updatedMessage)
-      this.socket.send(stringUpdatedMessage)
-  }
-
-
   render() {
 
     const colorObject = {color: this.state.currentUser.userColor}
     
-    console.log("Color: ", colorObject)
+
     return (
 
       <div>
@@ -113,7 +108,6 @@ class App extends Component {
   }
 }
 
-//]
 
 
 export default App;
