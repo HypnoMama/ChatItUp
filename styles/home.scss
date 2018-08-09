@@ -1,4 +1,4 @@
-
+$main-color: #5bbf9c;
 
     body {
       background: white;
@@ -9,7 +9,7 @@
     }
 
     .chatbar {
-      background: tomato;
+      background: $main-color;
       border-top: 1px solid black;
       bottom: 0;
       display: flex;
@@ -64,7 +64,7 @@
     }
 
     .navbar {
-      background: tomato;
+      background: $main-color;
       border-bottom: 1px solid black;
       height: 60px;
       left: 0;
@@ -84,4 +84,9 @@
       line-height: 60px;
       padding: 0 10px;
       text-decoration: none;
+    }
+
+    .count {
+      float: right;
+      margin-top: 21px;
     }
