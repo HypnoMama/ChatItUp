@@ -9,7 +9,7 @@ class Nav extends Component {
         
        
             <nav className="navbar">
-                <a href="/" className="navbar-brand">Chat It Up!</a>
+                <a href="/" className="navbar-brand">Chat It Up!<i className="far fa-comments"></i></a>
                 <span className="count">{this.props.count} users online</span>
             </nav>
        
