@@ -48,7 +48,6 @@ function checkCount() {
     const count = {
         count: wss.clients.size
     }
-    console.log(count)
     const stringCount = JSON.stringify(count)
     for (let client of wss.clients){
       if (client.readyState){
@@ -60,7 +59,7 @@ function checkCount() {
 wss.on('connection', (ws) => {
   console.log('Client connected');
   checkCount()
-  console.log(wss.clients.size)
+ 
 
   const newConnection = {
       content: "a new user has joined the chat!",
