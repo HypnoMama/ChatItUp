@@ -44,10 +44,24 @@ function handleMessage(message) {
     }     
 }
 
-
+function checkCount() {
+    const count = {
+        count: wss.clients.size
+    }
+    console.log(count)
+    const stringCount = JSON.stringify(count)
+    for (let client of wss.clients){
+      if (client.readyState){
+          client.send(stringCount)
+      }
+}
+}
 
 wss.on('connection', (ws) => {
   console.log('Client connected');
+  checkCount()
+  console.log(wss.clients.size)
+
   const newConnection = {
       content: "a new user has joined the chat!",
       id: createId(),
@@ -62,7 +76,7 @@ wss.on('connection', (ws) => {
   
 //   ws.send('hello from server')//this sends to client side as event
   ws.on('message', handleMessage)
-})
+
 
 
 
@@ -70,7 +84,10 @@ wss.on('connection', (ws) => {
 
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  wss.on('close', () => {
+  ws.on('close', () => {
       console.log('Client disconnected');
-      
-    });
+      checkCount()
+        // console.log(wss.clients.size)
+  })
+
+})
