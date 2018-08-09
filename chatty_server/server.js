@@ -53,12 +53,30 @@ function checkCount() {
       if (client.readyState){
           client.send(stringCount)
       }
+    }
 }
+
+function color() {
+    const colors = ['#168D99', '#14CC97', '#CC8C93', '#78B4FF']
+    const index = Math.floor(Math.random()* Math.floor(3))
+
+    const userColor = JSON.stringify({ userColor: colors[index] })
+    console.log(userColor)
+    for (let client of wss.clients){
+        if (client.readyState){
+            client.send(userColor)
+        }
+      }
+
+        
+    
 }
 
 wss.on('connection', (ws) => {
   console.log('Client connected');
+  
   checkCount()
+  color()
  
 
   const newConnection = {
@@ -90,3 +108,5 @@ wss.on('connection', (ws) => {
   })
 
 })
+
+//
