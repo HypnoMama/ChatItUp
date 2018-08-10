@@ -34,5 +34,5 @@ open http://localhost:3000
 
 ### Screenshots
 
-[!Family Chat](https://github.com/HypnoMama/ChattyApp/blob/master/docs/ChatItUp1.png?raw=true)
-[!Group Chat](https://github.com/HypnoMama/ChattyApp/blob/master/docs/ChatItUp2.png?raw=true)
+!["Family Chat"](https://github.com/HypnoMama/ChattyApp/blob/master/docs/ChatItUp1.png?raw=true)
+!["Group Chat"](https://github.com/HypnoMama/ChattyApp/blob/master/docs/ChatItUp2.png?raw=true)
